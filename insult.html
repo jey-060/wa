@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="design.css">
+</head>
+<body>
+  
+  <h2>회원가입</h2>
+  <form onsubmit="register(event)">
+    <input id="username" placeholder="아이디" required><br><br>
+    <h7>특수문자 불가능</h7><br><br>
+    <input id="password" type="password" placeholder="비밀번호" required><br><br>
+    <h7>특수문자 필수</h7><br><br>
+
+    <button type="submit">가입하기</button>
+  </form>
+  <script>
+    function register(e) {
+      console.log('클릭됨');
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      fetch('http://localhost:3000/insult', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => res.text())
+      .then(data => {
+        alert(data);
+        location.href = 'start.html';
+      });
+    }
+  </script>
+</body>
+</html>

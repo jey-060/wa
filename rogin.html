@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <link rel="stylesheet" href="design.css">
+</head>
+<body>
+  <h2>로그인</h2>
+
+  <form onsubmit="login(event)"></form>
+    <input id="username" placeholder="아이디" required><br><br>
+    <input id="password" type="password" placeholder="비밀번호" required><br><br>
+
+    <button onclick="login(event)">로그인</button>
+  </form>
+
+  <script>
+    function login(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      fetch('http://localhost:3000/rogin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => res.text())
+      .then(data => {
+        if (data === '로그인 성공') {
+          location.href = 'profil.html';
+        } else {
+          alert('로그인 실패');
+        }
+      });
+    }
+
+    function goRegister() {
+      location.href = 'register.html';
+    }
+  </script>
+</body>
+</html>
