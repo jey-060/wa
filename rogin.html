@@ -7,7 +7,7 @@
 <body>
   <h2>로그인</h2>
 
-  <form onsubmit="login(event)"></form>
+  <form onsubmit="login(event)">
     <input id="username" placeholder="아이디" required><br><br>
     <input id="password" type="password" placeholder="비밀번호" required><br><br>
 
@@ -20,7 +20,7 @@
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      fetch('http://localhost:3000/rogin', {
+      fetch('/rogin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
