@@ -8,8 +8,7 @@
     "start": "node server.js"
   },
   "start": "node server.js",
-  "postinstall": "npm rebuild sqlite3 --build-from-source"
-  ,
+  "postinstall": "npm rebuild sqlite3 --build-from-source",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -18,7 +17,6 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "sqlite3": "^6.0.1"
   },
   "repository": {
     "type": "git",
@@ -28,5 +26,4 @@
     "url": "https://github.com/jey-060/wa/issues"
   },
   "homepage": "https://github.com/jey-060/wa#readme"
-
 }
