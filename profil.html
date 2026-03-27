@@ -11,19 +11,21 @@
   <button onclick="logout()">로그아웃</button>
 
   <script>
-    fetch('http://localhost:3000/profil')
-      .then(res => res.json())
-      .then(data => {
-        if (data.username) {
-          document.getElementById('user').innerText = data.username;
-        } else {
-          alert('로그인 필요');
-          location.href = 'insult.html';
-        }
-      });
+    fetch('/profile')
+  .then(res => {
+    if (!res.ok) throw new Error();
+    return res.json();
+  })
+  .then(data => {
+    document.getElementById('user').innerText = data.username;
+  })
+  .catch(() => {
+    alert('로그인 필요');
+    location.href = 'insult.html';
+  });
 
     function logout() {
-      fetch('http://localhost:3000/logout')
+      fetch('/logout')
         .then(() => location.href = 'start.html');
     }
   </script>
