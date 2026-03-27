@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "start": "node server.js",
+  "postinstall": "npm rebuild sqlite3 --build-from-source"
+  ,
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,7 +20,6 @@
     "express-session": "^1.19.0",
     "sqlite3": "^6.0.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jey-060/wa.git"
@@ -26,4 +28,5 @@
     "url": "https://github.com/jey-060/wa/issues"
   },
   "homepage": "https://github.com/jey-060/wa#readme"
+
 }
