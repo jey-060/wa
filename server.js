@@ -81,9 +81,15 @@ app.post('/insult', async (req, res) => {
     res.send('회원가입 완료');
   } catch (err) {
     console.error(err);
+
+    if (err.code === '23505') {
+      return res.status(400).send('이미 존재하는 아이디입니다.');
+    }
+
     res.status(500).send('에러 발생');
   }
 });
+
 
 app.post('/rogin', async (req, res) => {
   const { username, password } = req.body;
