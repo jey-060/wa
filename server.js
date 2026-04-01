@@ -9,23 +9,28 @@ const path = require('path');
 const app = express();
 
 app.set('trust proxy', 1);
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: true,
-    httpOnly: true
-  }
+app.use(helmet({
+  contentSecurityPolicy: false
 }));
-
-app.use(helmet());
 
 app.use(cors({
   origin: true,
   credentials: true
+}));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'lax'
+  }
 }));
 
 const pool = new Pool({
@@ -36,12 +41,14 @@ const pool = new Pool({
 });
 
 pool.query(`
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  username TEXT UNIQUE,
-  password TEXT
-)
-`);
+  CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE,
+    password TEXT
+  )
+`).catch((err) => {
+  console.error('DB init error:', err);
+});
 
 app.use(express.static(path.join(__dirname)));
 
@@ -62,6 +69,7 @@ app.post('/insult', async (req, res) => {
 
     res.send('회원가입 완료');
   } catch (err) {
+    console.error(err);
     res.status(500).send('에러 발생');
   }
 });
@@ -71,26 +79,29 @@ app.post('/rogin', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM users WHERE username=$1',
+      'SELECT * FROM users WHERE username = $1',
       [username]
     );
 
-    if (result.rows.length > 0) {
-      const user = result.rows[0];
-
-      const match = await bcrypt.compare(password, user.password);
-
-      if (match) {
-        req.session.user = {
-          id: user.id,
-          username: user.username
-        };
-        return res.send('로그인 성공');
-      }
+    if (result.rows.length === 0) {
+      return res.send('로그인 실패');
     }
 
-    res.send('로그인 실패');
+    const user = result.rows[0];
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      return res.send('로그인 실패');
+    }
+
+    req.session.user = {
+      id: user.id,
+      username: user.username
+    };
+
+    res.send('로그인 성공');
   } catch (err) {
+    console.error(err);
     res.status(500).send('에러 발생');
   }
 });
@@ -105,4 +116,6 @@ app.get('/profil', (req, res) => {
   });
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Server started');
+});
