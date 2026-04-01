@@ -59,6 +59,17 @@ app.get('/', (req, res) => {
 app.post('/insult', async (req, res) => {
   const { username, password } = req.body;
 
+  const usernameRegex = /^[a-zA-Z0-9]+$/;
+  const specialRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+  if (!usernameRegex.test(username)) {
+    return res.status(400).send('아이디에는 영문과 숫자만 사용할 수 있습니다.');
+  }
+
+  if (!specialRegex.test(password)) {
+    return res.status(400).send('비밀번호에 특수문자를 1개 이상 포함해야 합니다.');
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -76,6 +87,12 @@ app.post('/insult', async (req, res) => {
 
 app.post('/rogin', async (req, res) => {
   const { username, password } = req.body;
+
+  const usernameRegex = /^[a-zA-Z0-9]+$/;
+
+  if (!usernameRegex.test(username)) {
+    return res.status(400).send('아이디 형식이 올바르지 않습니다.');
+  }
 
   try {
     const result = await pool.query(

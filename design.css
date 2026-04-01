@@ -1,28 +1,28 @@
 body {
-  background: #559317;
+  background: #70bded;
   font-family: Arial;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 130px;
 }
 
 input {
   width: 200px;
   padding: 10px;
   margin: 10px;
-  border: 1px solid #450808;
+  border: 1px solid #2b0808;
   border-radius: 5px;
 }
 
 button {
   width: 220px;
   padding: 10px;
-  background: rgb(43, 29, 197);
-  color: rgb(220, 27, 191);
+  background: rgb(233, 226, 149);
+  color: rgb(59, 19, 90);
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 button:hover {
-  background: #08bf76;
+  background: #08c50f33;
 }
