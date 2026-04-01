@@ -7,17 +7,19 @@ app.use(express.json());
 app.use(session({
   secret: 'secret',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {
+    secure: true,
+    httpOnly: true
+  
+}
 }));
-
+app.set('trust proxy', 1);
 const bcrypt = require('bcrypt');
 const helmet = require('helmet');
 
 app.use(helmet());
-cookie: {
-  httpOnly: true,
-  secure: true
-}
+
 const cors = require('cors');
 app.use(cors({
   origin: true,
