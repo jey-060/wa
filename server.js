@@ -50,10 +50,10 @@ pool.query(`
   console.error('DB init error:', err);
 });
 
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'start.html'));
+  res.sendFile(path.join(__dirname, 'public','start.html'));
 });
 
 app.post('/insult', async (req, res) => {
